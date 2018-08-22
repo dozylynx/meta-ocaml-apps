@@ -1,0 +1,39 @@
+diff --git a/configure b/configure
+index 9c936c0..09d4c85 100755
+--- a/configure
++++ b/configure
+@@ -572,7 +572,7 @@ ac_default_prefix=/usr/local
+ ac_clean_files=
+ ac_config_libobj_dir=.
+ LIBOBJS=
+-cross_compiling=no
++cross_compiling=yes
+ subdirs=
+ MFLAGS=
+ MAKEFLAGS=
+--- a/src/OCamlMakefile
++++ b/src/OCamlMakefile
+@@ -511,10 +511,11 @@ DINCFLAGS := $(INCFLAGS) $(SOURCE_DIRS:%=-I %) $(OCAML_DEFAULT_DIRS:%=-I %)
+ INCFLAGS := $(DINCFLAGS) $(INCDIRS:%=-I %)
+ CINCFLAGS += $(SOURCE_DIRS:%=-I%) $(INCDIRS:%=-I%) $(OCAML_DEFAULT_DIRS:%=-I%)
+ 
++MKLIB_CLIBFLAGS = $(CLIBFLAGS:%=-ldopt %)
+ ifndef MSVC
+-CLIBFLAGS += $(SOURCE_DIRS:%=-L%) $(LIBDIRS:%=-L%) \
+-             $(EXTLIBDIRS:%=-L%) $(EXTLIBDIRS:%=-Wl,$(RPATH_FLAG)%) \
+-             $(OCAML_DEFAULT_DIRS:%=-L%)
++MKLIB_CLIBFLAGS += $(SOURCE_DIRS:%=-L%) $(LIBDIRS:%=-L%) \
++                   $(EXTLIBDIRS:%=-L%) $(EXTLIBDIRS:%=-Wl,$(RPATH_FLAG)%) \
++                   $(OCAML_DEFAULT_DIRS:%=-L%)
+ endif
+ 
+ ifndef PROFILING
+@@ -885,7 +886,7 @@ $(DLLSONAME):		$(OBJ_LINK)
+ 
+ else
+ $(DLLSONAME):		$(OBJ_LINK)
+-			$(OCAMLMKLIB) $(INCFLAGS) $(CLIBFLAGS) \
++			$(OCAMLMKLIB) -verbose $(INCFLAGS) $(MKLIB_CLIBFLAGS) \
+ 				-o $(CLIB_BASE) $(OBJ_LINK) $(CLIBS:%=-l%) \
+ 				$(OCAMLMKLIB_FLAGS)
+ endif

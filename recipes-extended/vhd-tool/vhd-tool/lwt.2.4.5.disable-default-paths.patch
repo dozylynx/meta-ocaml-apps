@@ -1,0 +1,18 @@
+diff --git a/discover.ml b/discover.ml
+index 5933a1e..dc08bc1 100644
+--- a/discover.ml
++++ b/discover.ml
+@@ -40,12 +40,7 @@ let ( // ) = Filename.concat
+ 
+ let default_search_paths =
+   List.map (fun dir -> (dir ^ "/include", dir ^ "/lib")) [
+-    "/usr";
+-    "/usr/local";
+-    "/opt";
+-    "/opt/local";
+-    "/sw";
+-    "/mingw";
++    "/NO-SUCH-PATH";
+   ]
+ 
+ let path_sep = if Sys.os_type = "Win32" then ';' else ':'

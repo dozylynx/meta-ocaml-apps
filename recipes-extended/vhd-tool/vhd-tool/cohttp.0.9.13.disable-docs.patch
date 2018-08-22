@@ -1,0 +1,48 @@
+diff --git a/myocamlbuild.ml b/myocamlbuild.ml
+index 5ea966c..e6d1d78 100644
+--- a/myocamlbuild.ml
++++ b/myocamlbuild.ml
+@@ -289,7 +289,6 @@ module MyOCamlbuildFindlib = struct
+             begin fun pkg ->
+               flag ["ocaml"; "compile";  "pkg_"^pkg] & S[A"-package"; A pkg];
+               flag ["ocaml"; "ocamldep"; "pkg_"^pkg] & S[A"-package"; A pkg];
+-              flag ["ocaml"; "doc";      "pkg_"^pkg] & S[A"-package"; A pkg];
+               flag ["ocaml"; "link";     "pkg_"^pkg] & S[A"-package"; A pkg];
+               flag ["ocaml"; "infer_interface"; "pkg_"^pkg] & S[A"-package"; A pkg];
+             end 
+@@ -300,7 +299,6 @@ module MyOCamlbuildFindlib = struct
+           List.iter begin fun syntax ->
+           flag ["ocaml"; "compile";  "syntax_"^syntax] & S[A"-syntax"; A syntax];
+           flag ["ocaml"; "ocamldep"; "syntax_"^syntax] & S[A"-syntax"; A syntax];
+-          flag ["ocaml"; "doc";      "syntax_"^syntax] & S[A"-syntax"; A syntax];
+           flag ["ocaml"; "infer_interface"; "syntax_"^syntax] & S[A"-syntax"; A syntax];
+           end (find_syntaxes ());
+ 
+@@ -313,7 +311,6 @@ module MyOCamlbuildFindlib = struct
+            * the "threads" package using the previous plugin.
+            *)
+           flag ["ocaml"; "pkg_threads"; "compile"] (S[A "-thread"]);
+-          flag ["ocaml"; "pkg_threads"; "doc"] (S[A "-I"; A "+threads"]);
+           flag ["ocaml"; "pkg_threads"; "link"] (S[A "-thread"]);
+           flag ["ocaml"; "pkg_threads"; "infer_interface"] (S[A "-thread"])
+ 
+@@ -408,7 +408,7 @@ module MyOCamlbuildBase = struct
+                           List.iter
+                             (fun str ->
+                                flag ["ocaml"; "use_"^nm; str] (S[A"-I"; P dir]))
+-                            ["compile"; "infer_interface"; "doc"])
++                            ["compile"; "infer_interface"])
+                        tl)
+               t.lib_ocaml;
+ 
+diff --git a/Makefile b/Makefile
+index db5b959..d33e192 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,5 +1,5 @@
+ .PHONY: all clean install build
+-all: build test doc
++all: build test
+ 
+ PREFIX ?= /usr/local
+ NAME=cohttp

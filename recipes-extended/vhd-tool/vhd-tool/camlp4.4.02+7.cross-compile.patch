@@ -1,0 +1,13 @@
+diff --git a/myocamlbuild.ml b/myocamlbuild.ml
+index 7264df1..f536132 100644
+--- a/myocamlbuild.ml
++++ b/myocamlbuild.ml
+@@ -201,7 +201,7 @@ let () =
+       ~dep:gen_import
+       ~prod:camlp4_import
+       (fun _ _ ->
+-         Cmd (S [Px gen_import; A Myocamlbuild_config.libdir]));
++         Cmd (S [P"ocamlrun"; P gen_import; A Myocamlbuild_config.libdir]));
+ 
+     copy_rule "% -> %.exe" ~insert:`bottom "%" "%.exe";
+ 

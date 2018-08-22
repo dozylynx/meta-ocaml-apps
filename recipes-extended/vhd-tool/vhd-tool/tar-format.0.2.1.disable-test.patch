@@ -1,0 +1,68 @@
+diff --git a/setup.ml b/setup.ml
+index b744564..5eaa07f 100644
+--- a/setup.ml
++++ b/setup.ml
+@@ -5909,63 +5909,6 @@ let setup_t =
+                       lib_findlib_parent = Some "tar";
+                       lib_findlib_name = Some "lwt";
+                       lib_findlib_containers = [];
+-                      });
+-               Executable
+-                 ({
+-                     cs_name = "parse_test";
+-                     cs_data = PropList.Data.create ();
+-                     cs_plugin_data = [];
+-                     },
+-                   {
+-                      bs_build =
+-                        [
+-                           (OASISExpr.EBool true, false);
+-                           (OASISExpr.EFlag "lwtunix", true)
+-                        ];
+-                      bs_install = [(OASISExpr.EBool true, false)];
+-                      bs_path = "lib_test";
+-                      bs_compiled_object = Best;
+-                      bs_build_depends =
+-                        [
+-                           InternalLibrary "tar";
+-                           InternalLibrary "tar_unix";
+-                           InternalLibrary "tar_lwt_unix";
+-                           FindlibPackage ("cstruct", None);
+-                           FindlibPackage ("oUnit", None)
+-                        ];
+-                      bs_build_tools = [ExternalTool "ocamlbuild"];
+-                      bs_c_sources = [];
+-                      bs_data_files = [];
+-                      bs_ccopt = [(OASISExpr.EBool true, [])];
+-                      bs_cclib = [(OASISExpr.EBool true, [])];
+-                      bs_dlllib = [(OASISExpr.EBool true, [])];
+-                      bs_dllpath = [(OASISExpr.EBool true, [])];
+-                      bs_byteopt = [(OASISExpr.EBool true, [])];
+-                      bs_nativeopt = [(OASISExpr.EBool true, [])];
+-                      },
+-                   {exec_custom = true; exec_main_is = "parse_test.ml"; });
+-               Test
+-                 ({
+-                     cs_name = "parse_test";
+-                     cs_data = PropList.Data.create ();
+-                     cs_plugin_data = [];
+-                     },
+-                   {
+-                      test_type = (`Test, "custom", Some "0.3");
+-                      test_command =
+-                        [(OASISExpr.EBool true, ("./parse_test.native", []))];
+-                      test_custom =
+-                        {
+-                           pre_command = [(OASISExpr.EBool true, None)];
+-                           post_command = [(OASISExpr.EBool true, None)];
+-                           };
+-                      test_working_directory = None;
+-                      test_run =
+-                        [
+-                           (OASISExpr.ENot (OASISExpr.EFlag "tests"), false);
+-                           (OASISExpr.EFlag "tests", true)
+-                        ];
+-                      test_tools = [];
+                       })
+             ];
+           plugins =

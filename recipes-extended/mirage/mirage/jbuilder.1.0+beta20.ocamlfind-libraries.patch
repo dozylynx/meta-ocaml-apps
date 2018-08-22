@@ -1,0 +1,15 @@
+diff --git a/src/context.ml b/src/context.ml
+index 4d0a90d..5b8399e 100644
+--- a/src/context.ml
++++ b/src/context.ml
+@@ -219,10 +219,6 @@ let create ~(kind : Kind.t) ~path ~env ~name ~merlin ~targets () =
+       | Some s -> Bin.parse_path s ~sep:ocamlpath_sep
+     in
+     let findlib_path () =
+-      match kind, findlib_toolchain, Setup.library_path with
+-      | Default, None, Some l ->
+-        Fiber.return (ocamlpath @ List.map l ~f:Path.absolute)
+-      | _ ->
+         (* If ocamlfind is present, it has precedence over everything else. *)
+         match which "ocamlfind" with
+         | Some fn ->

@@ -1,0 +1,312 @@
+{
+    "command-line": [
+        "opam",
+        "install",
+        "--root=/mnt/3build/ocaml-arm-32bit/poky/build/tmp/work/armv7vehf-neon-poky-linux-gnueabi/mirage/3.0.5-r0/recipe-sysroot-native/usr/share/ocaml/opam-root",
+        "--dry-run",
+        "--json=/mnt/3build/ocaml-arm-32bit/poky/build/downloads/opam/mirage.3.0.5.mirage.4.04.2.solution.json",
+        "mirage",
+        "--yes"
+    ],
+    "opam-version": "2.0.0~beta4 (324cd0e2ade04fc1fa2356121904334a5d2d7eb6)",
+    "solution": [
+        {
+            "install": {
+                "name": "base-num",
+                "no-url": "1",
+                "version": "base"
+            }
+        },
+        {
+            "install": {
+                "name": "ocamlbuild",
+                "md5-checksum": "442baa19470bd49150f153122e22907b",
+                "url": "https://github.com/ocaml/ocamlbuild/archive/0.12.0.tar.gz",
+                "license": "LGPL-2 with OCaml linking exception",
+                "version": "0.12.0"
+            }
+        },
+        {
+            "install": {
+                "name": "conf-m4",
+                "no-url": "1",
+                "license": "GPL-3",
+                "version": "1"
+            }
+        },
+        {
+            "install": {
+                "name": "jbuilder",
+                "md5-checksum": "09b8a90c6e3333aef2cac947424c1d66",
+                "url": "https://github.com/ocaml/dune/releases/download/1.0+beta20/jbuilder-1.0.beta20.tbz",
+                "license": "Apache-2.0",
+                "version": "1.0+beta20"
+            }
+        },
+        {
+            "install": {
+                "name": "num",
+                "no-url": "1",
+                "license": "LGPL-2 with OCaml linking exception",
+                "version": "0"
+            }
+        },
+        {
+            "install": {
+                "name": "uchar",
+                "md5-checksum": "c9ba2c738d264c420c642f7bb1cf4a36",
+                "url": "https://github.com/ocaml/uchar/releases/download/v0.0.2/uchar-0.0.2.tbz",
+                "license": "typeof OCaml system",
+                "version": "0.0.2"
+            }
+        },
+        {
+            "install": {
+                "name": "ocamlfind",
+                "md5-checksum": "a710c559667672077a93d34eb6a42e5b",
+                "url": "http://download.camlcity.org/download/findlib-1.8.0.tar.gz",
+                "version": "1.8.0"
+            }
+        },
+        {
+            "install": {
+                "name": "sexplib0",
+                "md5-checksum": "1c14ba30b471e49f1b23fea5ff99ea6b",
+                "url": "https://ocaml.janestreet.com/ocaml-core/v0.11/files/sexplib0-v0.11.0.tar.gz",
+                "license": "Apache-2.0",
+                "version": "v0.11.0"
+            }
+        },
+        {
+            "install": {
+                "name": "result",
+                "md5-checksum": "4beebefd41f7f899b6eeba7414e7ae01",
+                "url": "https://github.com/janestreet/result/releases/download/1.3/result-1.3.tbz",
+                "license": "BSD3",
+                "version": "1.3"
+            }
+        },
+        {
+            "install": {
+                "name": "ppx_derivers",
+                "md5-checksum": "4ddce8f43fdb9b0ef0ab6a7cbfebc3e3",
+                "url": "https://github.com/diml/ppx_derivers/archive/1.0.tar.gz",
+                "license": "BSD3",
+                "version": "1.0"
+            }
+        },
+        {
+            "install": {
+                "name": "ocaml-compiler-libs",
+                "md5-checksum": "e170c16186aa55b7e8b11e461418a10a",
+                "url": "https://ocaml.janestreet.com/ocaml-core/v0.11/files/ocaml-compiler-libs-v0.11.0.tar.gz",
+                "license": "Apache-2.0",
+                "version": "v0.11.0"
+            }
+        },
+        {
+            "install": {
+                "name": "ocamlgraph",
+                "md5-checksum": "9d71ca69271055bd22d0dfe4e939831a",
+                "url": "http://ocamlgraph.lri.fr/download/ocamlgraph-1.8.8.tar.gz",
+                "license": "GNU Library General Public License version 2.1",
+                "version": "1.8.8"
+            }
+        },
+        {
+            "install": {
+                "name": "base-bytes",
+                "no-url": "1",
+                "version": "base"
+            }
+        },
+        {
+            "install": {
+                "name": "parsexp",
+                "md5-checksum": "816fce8d14b71a379296577c803bdbca",
+                "url": "https://ocaml.janestreet.com/ocaml-core/v0.11/files/parsexp-v0.11.0.tar.gz",
+                "license": "Apache-2.0",
+                "version": "v0.11.0"
+            }
+        },
+        {
+            "install": {
+                "name": "base",
+                "md5-checksum": "787aaa04b25eca106ebb9380a32bad66",
+                "url": "https://ocaml.janestreet.com/ocaml-core/v0.11/files/base-v0.11.0.tar.gz",
+                "license": "Apache-2.0",
+                "version": "v0.11.0"
+            }
+        },
+        {
+            "install": {
+                "name": "topkg",
+                "md5-checksum": "8978a0595db1a22e4251ec62735d4b84",
+                "url": "http://erratique.ch/software/topkg/releases/topkg-0.9.1.tbz",
+                "license": "ISC",
+                "version": "0.9.1"
+            }
+        },
+        {
+            "install": {
+                "name": "ocaml-migrate-parsetree",
+                "md5-checksum": "7eb12fa82ea70bd89478e18464f39949",
+                "url": "https://github.com/ocaml-ppx/ocaml-migrate-parsetree/archive/v1.0.10.tar.gz",
+                "license": "LGPL-2.1",
+                "version": "1.0.10"
+            }
+        },
+        {
+            "install": {
+                "name": "sexplib",
+                "md5-checksum": "1d53d945914b6b9a380dc8923f19e9ae",
+                "url": "https://ocaml.janestreet.com/ocaml-core/v0.11/files/sexplib-v0.11.0.tar.gz",
+                "license": "Apache-2.0",
+                "version": "v0.11.0"
+            }
+        },
+        {
+            "install": {
+                "name": "stdio",
+                "md5-checksum": "2db42ee38c91b3ff7126c2634c407b99",
+                "url": "https://ocaml.janestreet.com/ocaml-core/v0.11/files/stdio-v0.11.0.tar.gz",
+                "license": "Apache-2.0",
+                "version": "v0.11.0"
+            }
+        },
+        {
+            "install": {
+                "name": "rresult",
+                "md5-checksum": "2aa904e5f1707903da68d80d71c85637",
+                "url": "http://erratique.ch/software/rresult/releases/rresult-0.5.0.tbz",
+                "license": "ISC",
+                "version": "0.5.0"
+            }
+        },
+        {
+            "install": {
+                "name": "cmdliner",
+                "md5-checksum": "ab2f0130e88e8dcd723ac6154c98a881",
+                "url": "http://erratique.ch/software/cmdliner/releases/cmdliner-1.0.2.tbz",
+                "license": "ISC",
+                "version": "1.0.2"
+            }
+        },
+        {
+            "install": {
+                "name": "astring",
+                "md5-checksum": "c5bf6352b9ac27fbeab342740f4fa870",
+                "url": "http://erratique.ch/software/astring/releases/astring-0.8.3.tbz",
+                "license": "ISC",
+                "version": "0.8.3"
+            }
+        },
+        {
+            "install": {
+                "name": "ppxlib",
+                "md5-checksum": "f01c8af982e96c73513745727ee6d04e",
+                "url": "https://github.com/ocaml-ppx/ppxlib/releases/download/0.2.0/ppxlib-0.2.0.tbz",
+                "license": "Apache-2.0",
+                "version": "0.2.0"
+            }
+        },
+        {
+            "install": {
+                "name": "fmt",
+                "md5-checksum": "77b64aa6f20f09de28f2405d6195f12c",
+                "url": "http://erratique.ch/software/fmt/releases/fmt-0.8.5.tbz",
+                "license": "ISC",
+                "version": "0.8.5"
+            }
+        },
+        {
+            "install": {
+                "name": "fpath",
+                "md5-checksum": "52c7ecb0bf180088336f3c645875fa41",
+                "url": "http://erratique.ch/software/fpath/releases/fpath-0.7.2.tbz",
+                "license": "ISC",
+                "version": "0.7.2"
+            }
+        },
+        {
+            "install": {
+                "name": "ppx_sexp_conv",
+                "md5-checksum": "134d9eec6057db48806d6c62fbbf601d",
+                "url": "https://ocaml.janestreet.com/ocaml-core/v0.11/files/ppx_sexp_conv-v0.11.0.tar.gz",
+                "license": "Apache-2.0",
+                "version": "v0.11.0"
+            }
+        },
+        {
+            "install": {
+                "name": "logs",
+                "md5-checksum": "19f824c02c83c6dddc3bfb6459e4743e",
+                "url": "http://erratique.ch/software/logs/releases/logs-0.6.2.tbz",
+                "license": "ISC",
+                "version": "0.6.2"
+            }
+        },
+        {
+            "install": {
+                "name": "functoria-runtime",
+                "md5-checksum": "053ed65cf0bd9b2060f2c250ba6bb629",
+                "url": "https://github.com/mirage/functoria/releases/download/2.2.0/functoria-2.2.0.tbz",
+                "license": "ISC",
+                "version": "2.2.0"
+            }
+        },
+        {
+            "install": {
+                "name": "ipaddr",
+                "md5-checksum": "f3442867873b4b60d7860283ff98c3c8",
+                "url": "https://github.com/mirage/ocaml-ipaddr/releases/download/2.8.0/ipaddr-2.8.0.tbz",
+                "license": "ISC",
+                "version": "2.8.0"
+            }
+        },
+        {
+            "install": {
+                "name": "bos",
+                "md5-checksum": "aeae7447567db459c856ee41b5a66fd2",
+                "url": "http://erratique.ch/software/bos/releases/bos-0.2.0.tbz",
+                "license": "ISC",
+                "version": "0.2.0"
+            }
+        },
+        {
+            "install": {
+                "name": "mirage-runtime",
+                "md5-checksum": "37def6de00392f02729c7cb2a7d5a722",
+                "url": "https://github.com/mirage/mirage/releases/download/3.0.7/mirage-3.0.7.tbz",
+                "version": "3.0.7"
+            }
+        },
+        {
+            "install": {
+                "name": "functoria",
+                "md5-checksum": "053ed65cf0bd9b2060f2c250ba6bb629",
+                "url": "https://github.com/mirage/functoria/releases/download/2.2.0/functoria-2.2.0.tbz",
+                "license": "ISC",
+                "version": "2.2.0"
+            }
+        },
+        {
+            "install": {
+                "name": "mirage",
+                "md5-checksum": "bc7bc993a5f88ba8644a6e33a6b966a7",
+                "url": "https://github.com/mirage/mirage/releases/download/v3.0.8/mirage-3.0.8.tbz",
+                "version": "3.0.8"
+            }
+        }
+    ],
+    "switch": "4.04.2",
+    "request": {
+        "action": "install",
+        "remove": [],
+        "install": [
+            "mirage"
+        ],
+        "upgrade": [],
+        "criteria": "-removed,-count[version-lag:,true],-changed,-count[version-lag:,false],-new"
+    }
+}

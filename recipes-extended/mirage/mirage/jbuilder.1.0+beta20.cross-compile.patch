@@ -1,0 +1,114 @@
+diff --git a/bin/jbuild b/bin/jbuild
+deleted file mode 100644
+index 978fa8c..0000000
+--- a/bin/jbuild
++++ /dev/null
+@@ -1,5 +0,0 @@
+-(executable
+- ((name        main)
+-  (public_name jbuilder)
+-  (libraries (unix jbuilder jbuilder_cmdliner))
+-  (preprocess no_preprocessing)))
+diff --git a/boot.exe b/boot.exe
+new file mode 100644
+index 0000000..8a17861
+--- /dev/null
++++ b/boot.exe
+@@ -0,0 +1,10 @@
++#!/bin/bash
++
++export CAML_LD_LIBRARY_PATH=$(echo $CAML_LD_LIBRARY_PATH | \
++                              sed 's,/opam-root/cx-,/opam-root/,g')
++NATIVE_OPAM_SWITCH=$(echo $OPAMSWITCH | sed 's/^cx-//')
++
++rm -f _build/install/default/bin/jbuilder
++mkdir -p _build/install/default/bin
++ln -s ../../../../../../../../${NATIVE_OPAM_SWITCH}/bin/jbuilder _build/install/default/bin/jbuilder
++./boot-built.exe "$@"
+diff --git a/bootstrap.ml b/bootstrap.ml
+index c0513ec..261250d 100644
+--- a/bootstrap.ml
++++ b/bootstrap.ml
+@@ -142,6 +142,58 @@ let bin_dir, compiler =
+   | None -> prog_not_found "ocamlc"
+   | Some x -> x
+ 
++(* to make self_contained *)
++let list_last xs =
++  assert (xs<>[]);
++  List.hd (List.rev xs)
++
++module Span = struct
++  type t = {s:string;i:int;j:int} (* s,i,j - the part of the string i<=..<j *)
++  let of_string s = {s;i=0;j=String.length s}
++  let to_string = function {s;i;j} -> String.sub s i (j-i)
++  let length = function {s;i;j} -> j-i
++  let pred_to_indexes : (t->int list) -> t -> int list = (
++    fun p s -> (
++        let l = length s in
++        let r = ref [] in
++        let _ =
++          for i = 0 to l -1 do
++            {s=s.s;i=s.i+i;j=l}|>p|>(fun xs -> r:=xs @ !r)
++          done
++        in
++        List.rev !r
++      ))
++
++  let equal t1 t2 = (to_string t1 = to_string t2) (* FIXME inefficient *)
++
++  (* s - small; b - big *)
++  let starts ~prefix b = (
++    let s = prefix in
++    let l = length s in
++    if l <= length b then
++      (if equal s { b with j=(b.i+l) } then true else false)
++    else false
++  )
++end
++
++let indexes ~(sub:string) b = Span.(
++    let s = sub|>of_string in
++    let b = b|>of_string in
++    pred_to_indexes (fun x -> if starts s x then [x.i] else []) b
++  )
++
++let contains ~sub b = indexes sub b <> []
++let split_at s n = (String.sub s 0 n, String.sub s n (String.length s - n))
++let replace_last ~sub ~rep b =
++  indexes sub b |>
++  (fun xs -> split_at b (list_last xs)) |>
++  (fun (b1,b2) -> (
++       let (_,b3) = split_at b2 (String.length sub) in
++       b1^rep^b3))
++
++let host_compiler =
++  replace_last ~sub:"/cx/bin/" ~rep:"/bin/" (replace_last ~sub:"/opam-root/cx-" ~rep:"/opam-root/" compiler)
++
+ let ocamllex = get_prog bin_dir "ocamllex"
+ let ocamldep = get_prog bin_dir "ocamldep"
+ 
+@@ -443,8 +495,8 @@ let () = generate_file_with_all_the_sources ()
+ let cleanup ~keep_ml_file =
+   try
+     Array.iter (Sys.readdir ".") ~f:(fun fn ->
+-      if fn <> "boot.exe" &&
+-         starts_with fn ~prefix:"boot." &&
++      if fn <> "boot-built.exe" &&
++         starts_with fn ~prefix:"boot-built." &&
+          (fn <> "boot.ml" || not keep_ml_file) then
+         Sys.remove fn)
+   with _ ->
+@@ -452,9 +504,10 @@ let cleanup ~keep_ml_file =
+ 
+ let () =
+   let n =
+-    try exec "%s -g -w -40 -o boot.exe unix.cma %s"
+-          (Filename.quote compiler) generated_file
++    try exec "%s -g -w -40 -o boot-built.exe unix.cma %s"
++          (Filename.quote host_compiler) generated_file
+     with e -> cleanup ~keep_ml_file:true; raise e
+   in
+   cleanup ~keep_ml_file:(n <> 0);
++  exec "chmod 755 boot.exe";
+   if n <> 0 then exit n

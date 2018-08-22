@@ -1,0 +1,24 @@
+diff --git a/src/gen/jbuild b/src/gen/jbuild
+index aa4f79d..f14cdfb 100644
+--- a/src/gen/jbuild
++++ b/src/gen/jbuild
+@@ -1,6 +1,7 @@
+ (executables
+  ((names (gen_ast_pattern gen_ast_builder))
+   (flags (:standard -safe-string))
++  (modes (byte))
+   (libraries (ppxlib_ast
+               compiler-libs.common
+               compiler-libs.bytecomp
+diff --git a/traverse/jbuild b/traverse/jbuild
+index aa0716b..d60acfa 100644
+--- a/traverse/jbuild
++++ b/traverse/jbuild
+@@ -2,6 +2,7 @@
+  ((name        ppxlib_traverse)
+   (public_name ppxlib.traverse)
+   (kind ppx_rewriter)
++  (modes (byte native))
+   (flags (:standard -safe-string))
+   (libraries  (ppxlib))
+   (preprocess (pps (ppxlib_metaquot ppxlib.runner)))

@@ -1,0 +1,22 @@
+diff --git a/bootstrap b/bootstrap
+index 741736d..dcc70d0 100755
+--- a/bootstrap
++++ b/bootstrap
+@@ -85,12 +85,14 @@ rm -f src/path_generated.ml
+ ########################################################################
+ ########################################################################
+ ########################################################################
++NATIVE_SWITCH=$(echo $OPAMSWITCH | sed 's/^cx-//')
++NATIVE_OBUILD="${OPAMROOT}/${NATIVE_SWITCH}/bin/obuild"
+ 
+ # rebuild everything with the bootstraped version
+ export OCAMLRUNPARAM=b
+-./obuild.bootstrap clean
+-./obuild.bootstrap configure
+-time ./obuild.bootstrap build
++${NATIVE_OBUILD} clean
++${NATIVE_OBUILD} configure
++time ${NATIVE_OBUILD} build
+ if [ -x dist/build/obuild/obuild ]; then
+ 	rm obuild.bootstrap
+ fi

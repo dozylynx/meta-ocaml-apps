@@ -1,0 +1,82 @@
+diff --git a/Makefile b/Makefile
+index 35ce745..b6b8e1f 100644
+--- a/Makefile
++++ b/Makefile
+@@ -6,7 +6,6 @@
+ # Generic Makefile for oasis project
+ 
+ # Set to setup.exe for the release
+-SETUP := setup.exe
+ 
+ # Default rule
+ default: build
+@@ -18,45 +17,40 @@ setup-dev.exe: _oasis setup.ml
+ 	  ocamlfind ocamlc -o $@ -linkpkg -package ocamlbuild,oasis.dynrun setup_dev.ml || true
+ 	rm -f setup_dev.*
+ 
+-# Setup for the release
+-setup.exe: setup.ml
+-	ocamlopt.opt -o $@ $< || ocamlopt -o $@ $< || ocamlc -o $@ $<
+-	rm -f setup.cmx setup.cmi setup.o setup.obj setup.cmo
++build: setup.data
++	ocaml setup.ml -build $(BUILDFLAGS)
+ 
+-build: $(SETUP) setup.data
+-	./$(SETUP) -build $(BUILDFLAGS)
++doc: setup.data build
++	ocaml setup.ml -doc $(DOCFLAGS)
+ 
+-doc: $(SETUP) setup.data build
+-	./$(SETUP) -doc $(DOCFLAGS)
++doc-api: setup.data build
++	ocaml setup.ml -build lwt-api.docdir/index.html
+ 
+-doc-api: $(SETUP) setup.data build
+-	./$(SETUP) -build lwt-api.docdir/index.html
++test: setup.data build
++	ocaml setup.ml -test $(TESTFLAGS)
+ 
+-test: $(SETUP) setup.data build
+-	./$(SETUP) -test $(TESTFLAGS)
++all:
++	ocaml setup.ml -all $(ALLFLAGS)
+ 
+-all: $(SETUP)
+-	./$(SETUP) -all $(ALLFLAGS)
++install: setup.data
++	ocaml setup.ml -install $(INSTALLFLAGS)
+ 
+-install: $(SETUP) setup.data
+-	./$(SETUP) -install $(INSTALLFLAGS)
++uninstall: setup.data
++	ocaml setup.ml -uninstall $(UNINSTALLFLAGS)
+ 
+-uninstall: $(SETUP) setup.data
+-	./$(SETUP) -uninstall $(UNINSTALLFLAGS)
++reinstall: setup.data
++	ocaml setup.ml -reinstall $(REINSTALLFLAGS)
+ 
+-reinstall: $(SETUP) setup.data
+-	./$(SETUP) -reinstall $(REINSTALLFLAGS)
++clean:
++	ocaml setup.ml -clean $(CLEANFLAGS)
+ 
+-clean: $(SETUP)
+-	./$(SETUP) -clean $(CLEANFLAGS)
++distclean:
++	ocaml setup.ml -distclean $(DISTCLEANFLAGS)
+ 
+-distclean: $(SETUP)
+-	./$(SETUP) -distclean $(DISTCLEANFLAGS)
++configure:
++	ocaml setup.ml -configure $(CONFIGUREFLAGS)
+ 
+-configure: $(SETUP)
+-	./$(SETUP) -configure $(CONFIGUREFLAGS)
+-
+-setup.data: $(SETUP)
+-	./$(SETUP) -configure $(CONFIGUREFLAGS)
++setup.data:
++	ocaml setup.ml -configure $(CONFIGUREFLAGS)
+ 
+ .PHONY: default build doc test all install uninstall reinstall clean distclean configure

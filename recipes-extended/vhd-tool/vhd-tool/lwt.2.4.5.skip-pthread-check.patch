@@ -1,0 +1,12 @@
+diff --git a/discover.ml b/discover.ml
+index dc08bc1..41fbdc1 100644
+--- a/discover.ml
++++ b/discover.ml
+@@ -491,7 +491,6 @@ let () =
+   in
+ 
+   test_feature ~do_check:!use_libev "libev" "HAVE_LIBEV" test_libev;
+-  test_feature ~do_check:!use_pthread "pthread" "HAVE_PTHREAD" test_pthread;
+   test_feature ~do_check:!use_glib "glib" "" test_glib;
+ 
+   if !not_available <> [] then begin

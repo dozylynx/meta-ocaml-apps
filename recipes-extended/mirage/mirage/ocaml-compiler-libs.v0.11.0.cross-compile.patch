@@ -1,0 +1,24 @@
+diff --git a/src/gen/jbuild b/src/gen/jbuild
+index 9e949ad..30fddf1 100644
+--- a/src/gen/jbuild
++++ b/src/gen/jbuild
+@@ -2,6 +2,7 @@
+  ((names (gen))
+ (flags (:standard -safe-string))
+   (libraries (read_cma))
++  (modes (byte))
+   (preprocess no_preprocessing)))
+ 
+ (jbuild_version 1)
+diff --git a/src/shadow/gen/jbuild b/src/shadow/gen/jbuild
+index 9e949ad..30fddf1 100644
+--- a/src/shadow/gen/jbuild
++++ b/src/shadow/gen/jbuild
+@@ -2,6 +2,7 @@
+  ((names (gen))
+ (flags (:standard -safe-string))
+   (libraries (read_cma))
++  (modes (byte))
+   (preprocess no_preprocessing)))
+ 
+ (jbuild_version 1)

@@ -1,0 +1,44 @@
+diff --git a/configure b/configure
+index 6a4a558..15f3180 100755
+--- a/configure
++++ b/configure
+@@ -594,20 +594,13 @@ done
+ 
+ printf "Detecting compiler arguments: "
+ 
+-( cd tools/extract_args && make ) >ocargs.log 2>&1
+-if [ "$?" -eq 0 ]; then
+-    printf "(extractor built) "
+-    tools/extract_args/extract_args -o src/findlib/ocaml_args.ml ocamlc ocamlcp ocamloptp ocamlmklib ocamlmktop ocamlopt ocamldep ocamldoc >>ocargs.log 2>&1
+-    # ocamlbrowser does not work!
+-    if [ $? -eq 0 ]; then
+-	echo "ok"
+-    else
+-	echo "FAILED (see the file ocargs.log for details)"
+-	exit 1
+-    fi
++ocaml str.cma tools/extract_args/extract_args.ml -o src/findlib/ocaml_args.ml ocamlc ocamlcp ocamloptp ocamlmklib ocamlmktop ocamlopt ocamldep ocamldoc >>ocargs.log 2>&1
++# ocamlbrowser does not work!
++if [ $? -eq 0 ]; then
++echo "ok"
+ else
+-    echo "FAILED (see the file ocargs.log for details)"
+-    exit 1
++echo "FAILED (see the file ocargs.log for details)"
++exit 1
+ fi
+ 
+ ######################################################################
+diff --git a/tools/extract_args/Makefile b/tools/extract_args/Makefile
+index cd2bb05..5262941 100644
+--- a/tools/extract_args/Makefile
++++ b/tools/extract_args/Makefile
+@@ -1,7 +1,4 @@
+-all: extract_args
+-
+-extract_args: extract_args.ml
+-	ocamlc -o extract_args str.cma extract_args.ml
++all:
+ 
+ clean:
+ 	rm -f *.cmo *.cmi *.cma extract_args

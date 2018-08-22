@@ -1,0 +1,11 @@
+diff --git a/configure b/configure
+index b81f01c..bea66c4 100755
+--- a/configure
++++ b/configure
+@@ -3,5 +3,5 @@
+ trap "rm -f /tmp/configure.$$" EXIT
+ 
+ ocamlfind ocamlc -package findlib,cmdliner -linkpkg -o /tmp/configure.$$ configure.ml
+-/tmp/configure.$$ $*
++ocamlrun /tmp/configure.$$ $*
+ 

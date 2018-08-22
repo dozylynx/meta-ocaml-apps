@@ -1,0 +1,50 @@
+diff --git a/Makefile b/Makefile
+index 0f89f1b..02db6c8 100644
+--- a/Makefile
++++ b/Makefile
+@@ -6,32 +6,28 @@ J=4
+ 
+ export OCAMLRUNPARAM=b
+ 
+-setup.bin: setup.ml
+-	@ocamlopt.opt -o $@ $< || ocamlopt -o $@ $< || ocamlc -o $@ $<
+-	@rm -f setup.cmx setup.cmi setup.o setup.cmo
++setup.data:
++	@ocaml setup.ml -configure --enable-tests
+ 
+-setup.data: setup.bin
+-	@./setup.bin -configure --enable-tests
++build: setup.data
++	@ocaml setup.ml -build -j $(J)
+ 
+-build: setup.data setup.bin
+-	@./setup.bin -build -j $(J)
++doc: setup.data
++	@ocaml setup.ml -doc -j $(J)
+ 
+-doc: setup.data setup.bin
+-	@./setup.bin -doc -j $(J)
+-
+-install: setup.bin
+-	@./setup.bin -install
++install:
++	@ocaml setup.ml -install
+ 
+ uninstall:
+ 	@ocamlfind remove $(NAME) || true
+ 
+-test: setup.bin build
+-	@./setup.bin -test
++test: build
++	@ocaml setup.ml -test
+ 
+-reinstall: setup.bin
++reinstall:
+ 	@ocamlfind remove $(NAME) || true
+-	@./setup.bin -reinstall
++	@ocaml setup.ml -reinstall
+ 
+ clean:
+ 	@ocamlbuild -clean
+-	@rm -f setup.data setup.log setup.bin
++	@rm -f setup.data setup.log

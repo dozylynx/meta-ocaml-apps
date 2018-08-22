@@ -1,0 +1,13 @@
+diff --git a/myocamlbuild.ml b/myocamlbuild.ml
+index 9930ba6..650fa4f 100644
+--- a/myocamlbuild.ml
++++ b/myocamlbuild.ml
+@@ -430,7 +430,7 @@ module MyOCamlbuildBase = struct
+                           List.iter
+                             (fun str ->
+                                flag ["ocaml"; "use_"^nm; str] (S[A"-I"; P dir]))
+-                            ["compile"; "infer_interface"; "doc"])
++                            ["compile"; "infer_interface"])
+                        tl)
+               t.lib_ocaml;
+ 

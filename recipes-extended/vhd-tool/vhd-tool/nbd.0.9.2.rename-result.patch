@@ -1,0 +1,161 @@
+From 65a6460b5f7350e3eb1adefd6dffadbe9e28c045 Mon Sep 17 00:00:00 2001
+From: Christopher Clark <christopher.clark6@baesystems.com>
+Date: Sun, 12 Nov 2017 12:14:29 -0800
+Subject: [PATCH] rename result for 0.9.2
+
+---
+ lib/nbd.ml            |  6 +++---
+ lib/nbd.mli           |  6 +++---
+ lib/nbd_result.ml     | 14 ++++++++++++++
+ lib/result.ml         | 14 --------------
+ lwt/nbd_lwt_client.ml |  8 ++++----
+ lwt/nbd_lwt_server.ml |  4 ++--
+ 6 files changed, 26 insertions(+), 26 deletions(-)
+ create mode 100644 lib/nbd_result.ml
+ delete mode 100644 lib/result.ml
+
+diff --git a/lib/nbd.ml b/lib/nbd.ml
+index 3cbed4f..6d478f7 100644
+--- a/lib/nbd.ml
++++ b/lib/nbd.ml
+@@ -129,7 +129,7 @@ module Negotiate = struct
+     set_t_flags buf (Flag.to_int32 t.flags)
+ 
+   let unmarshal buf =
+-    let open Result in
++    let open Nbd_result in
+     let passwd = Cstruct.to_string (get_t_passwd buf) in
+     if passwd <> expected_passwd
+     then Error (Failure "Bad magic in negotiate")
+@@ -166,7 +166,7 @@ module Request = struct
+   } as big_endian
+ 
+   let unmarshal (buf: Cstruct.t) =
+-    let open Result in
++    let open Nbd_result in
+     let magic = get_t_magic buf in
+     ( if nbd_request_magic <> magic
+       then fail (Failure (Printf.sprintf "Bad request magic: expected %ld, got %ld" magic nbd_request_magic))
+@@ -203,7 +203,7 @@ module Reply = struct
+   } as big_endian
+ 
+   let unmarshal (buf: Cstruct.t) =
+-    let open Result in
++    let open Nbd_result in
+     let magic = get_t_magic buf in
+     ( if nbd_reply_magic <> magic
+       then fail (Failure (Printf.sprintf "Bad reply magic: expected %ld, got %ld" magic nbd_reply_magic))
+diff --git a/lib/nbd.mli b/lib/nbd.mli
+index be4957d..552e981 100644
+--- a/lib/nbd.mli
++++ b/lib/nbd.mli
+@@ -49,7 +49,7 @@ module Negotiate: sig
+   val sizeof: int
+ 
+   val marshal: Cstruct.t -> t -> unit
+-  val unmarshal: Cstruct.t -> (t, exn) Result.t
++  val unmarshal: Cstruct.t -> (t, exn) Nbd_result.t
+ end
+ 
+ 
+@@ -66,7 +66,7 @@ module Request: sig
+   val sizeof: int
+ 
+   val marshal: Cstruct.t -> t -> unit
+-  val unmarshal: Cstruct.t -> (t, exn) Result.t
++  val unmarshal: Cstruct.t -> (t, exn) Nbd_result.t
+ end
+ 
+ module Reply: sig
+@@ -80,6 +80,6 @@ module Reply: sig
+   val sizeof: int
+ 
+   val marshal: Cstruct.t -> t -> unit
+-  val unmarshal: Cstruct.t -> (t, exn) Result.t
++  val unmarshal: Cstruct.t -> (t, exn) Nbd_result.t
+ 
+ end
+diff --git a/lib/nbd_result.ml b/lib/nbd_result.ml
+new file mode 100644
+index 0000000..31a1c1a
+--- /dev/null
++++ b/lib/nbd_result.ml
+@@ -0,0 +1,14 @@
++type ('ok, 'err) t =
++  | Ok of 'ok
++  | Error of 'err
++
++let return x = Ok x
++
++let bind m f = match m with
++  | Ok x -> f x
++  | Error x -> Error x
++
++let (>>=) = bind
++
++let fail x = Error x
++
+diff --git a/lib/result.ml b/lib/result.ml
+deleted file mode 100644
+index 31a1c1a..0000000
+--- a/lib/result.ml
++++ /dev/null
+@@ -1,14 +0,0 @@
+-type ('ok, 'err) t =
+-  | Ok of 'ok
+-  | Error of 'err
+-
+-let return x = Ok x
+-
+-let bind m f = match m with
+-  | Ok x -> f x
+-  | Error x -> Error x
+-
+-let (>>=) = bind
+-
+-let fail x = Error x
+-
+diff --git a/lwt/nbd_lwt_client.ml b/lwt/nbd_lwt_client.ml
+index 3776438..5cf5786 100644
+--- a/lwt/nbd_lwt_client.ml
++++ b/lwt/nbd_lwt_client.ml
+@@ -69,8 +69,8 @@ module NbdRpc = struct
+     let buf = Cstruct.create 16 in
+     lwt () = sock.read buf in
+     match Reply.unmarshal buf with
+-    | Result.Ok x -> return (Some x.Reply.handle, x)
+-    | Result.Error e -> fail e
++    | Nbd_result.Ok x -> return (Some x.Reply.handle, x)
++    | Nbd_result.Error e -> fail e
+ 
+   let recv_body sock req_hdr res_hdr =
+     if res_hdr.Reply.error <> 0l
+@@ -108,8 +108,8 @@ let negotiate sock =
+   let buf = Cstruct.create Negotiate.sizeof in
+   lwt () = sock.read buf in
+   match Negotiate.unmarshal buf with
+-  | Result.Error e -> fail e
+-  | Result.Ok x ->
++  | Nbd_result.Error e -> fail e
++  | Nbd_result.Ok x ->
+     lwt t = Mux.create sock in
+     return (t, x.Negotiate.size, x.Negotiate.flags)
+ 
+diff --git a/lwt/nbd_lwt_server.ml b/lwt/nbd_lwt_server.ml
+index afa584b..6a00274 100644
+--- a/lwt/nbd_lwt_server.ml
++++ b/lwt/nbd_lwt_server.ml
+@@ -39,8 +39,8 @@ let negotiate fd size flags =
+ let next t =
+   lwt () = really_read t.fd t.request in
+   match Request.unmarshal t.request with
+-  | Result.Ok r -> return r
+-  | Result.Error e -> fail e
++  | Nbd_result.Ok r -> return r
++  | Nbd_result.Error e -> fail e
+ 
+ let ok t handle payload =
+   Lwt_mutex.with_lock t.m
+-- 
+2.7.4
+

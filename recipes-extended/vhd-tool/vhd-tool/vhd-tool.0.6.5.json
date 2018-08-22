@@ -1,0 +1,295 @@
+{
+    "command-line": [
+        "opam",
+        "install",
+        "--root=/mnt/build/lxc/xtopher-oe/rootfs/home/build/vtpm/x86/poky/build/tmp/work/x86_64-linux/vhd-tool-native/0.6.5-r0/recipe-sysroot-native/usr/share/ocaml/opam-root",
+        "--dry-run",
+        "--json=/mnt/build/lxc/xtopher-oe/rootfs/home/build/vtpm/x86/poky/build/downloads/opam/vhd-tool/vhd-tool.0.6.5.solution.json",
+        "vhd-tool.0.6.5",
+        "--yes"
+    ],
+    "switch": "4.02.2",
+    "solution": [
+        {
+            "install": {
+                "license": "GPL-2.0 | GPL-3.0",
+                "no-url": "1",
+                "name": "conf-which",
+                "version": "1"
+            }
+        },
+        {
+            "install": {
+                "license": "GPL-2.0",
+                "no-url": "1",
+                "name": "conf-pkg-config",
+                "version": "1.0"
+            }
+        },
+        {
+            "install": {
+                "license": "BSD-2-Clause",
+                "url": "https://github.com/ocaml-obuild/obuild/archive/obuild-v0.1.8.tar.gz",
+                "name": "obuild",
+                "md5-checksum": "5178265fec699c2c7da1cd7bd739996c",
+                "version": "0.1.8"
+            }
+        },
+        {
+            "install": {
+                "license": "BSD-3-Clause",
+                "url": "https://github.com/janestreet/result/archive/1.2.tar.gz",
+                "name": "result",
+                "md5-checksum": "3d5b66c5526918f0f2ca9d6811ef09c8",
+                "version": "1.2"
+            }
+        },
+        {
+            "install": {
+                "license": "GPL-3.0",
+                "no-url": "1",
+                "name": "conf-m4",
+                "version": "1"
+            }
+        },
+        {
+            "install": {
+                "license": "LGPL-2 with OCaml linking exception",
+                "no-url": "1",
+                "name": "ocamlbuild",
+                "version": "0"
+            }
+        },
+        {
+            "install": {
+                "license": "GPL-2.0",
+                "no-url": "1",
+                "name": "conf-time",
+                "version": "1"
+            }
+        },
+        {
+            "install": {
+                "license": "MIT",
+                "no-url": "1",
+                "name": "conf-ncurses",
+                "version": "1"
+            }
+        },
+        {
+            "install": {
+                "license": "MIT",
+                "url": "http://http.debian.net/debian/pool/main/f/findlib/findlib_1.7.3.orig.tar.gz",
+                "name": "ocamlfind",
+                "md5-checksum": "7d57451218359f7b7dfc969e3684a6da",
+                "version": "1.7.3"
+            }
+        },
+        {
+            "install": {
+                "license": "LGPL-2.0",
+                "url": "https://github.com/ocaml/camlp4/archive/4.02+7.tar.gz",
+                "name": "camlp4",
+                "md5-checksum": "108214c9a17d94a9e004530c454590e0",
+                "version": "4.02+7"
+            }
+        },
+        {
+            "install": {
+                "license": "ISC",
+                "url": "http://erratique.ch/software/topkg/releases/topkg-0.9.0.tbz",
+                "name": "topkg",
+                "md5-checksum": "1700991f570b9aaf49e6aad7d886e154",
+                "version": "0.9.0"
+            }
+        },
+        {
+            "install": {
+                "license": "LGPL-2.1-with-OpenSSL-exception",
+                "url": "http://downloads.sourceforge.net/project/savonet/ocaml-ssl/0.4.7/ocaml-ssl-0.4.7.tar.gz",
+                "name": "ssl",
+                "md5-checksum": "873533ce43cf4b88b4fb0ea27289320a",
+                "version": "0.4.7"
+            }
+        },
+        {
+            "install": {
+                "license": "LGPL-2.1 | LGPL-3.0",
+                "url": "https://github.com/djs55/ocaml-sha/archive/ocaml-sha-v1.9.tar.gz",
+                "name": "sha",
+                "md5-checksum": "b15756c7efed004acc80a93778920178",
+                "version": "1.9"
+            }
+        },
+        {
+            "install": {
+                "license": "MIT",
+                "url": "http://forge.ocamlcore.org/frs/download.php/1258/ounit-2.0.0.tar.gz",
+                "name": "ounit",
+                "md5-checksum": "2e0a24648c55005978d4923eb4925b28",
+                "version": "2.0.0"
+            }
+        },
+        {
+            "install": {
+                "no-url": "1",
+                "name": "base-bytes",
+                "version": "base"
+            }
+        },
+        {
+            "install": {
+                "license": "Apache-2.0",
+                "url": "https://ocaml.janestreet.com/ocaml-core/113.00/files/type_conv-113.00.02.tar.gz",
+                "name": "type_conv",
+                "md5-checksum": "62b64cf98ad2685a718dd7d1706497f5",
+                "version": "113.00.02"
+            }
+        },
+        {
+            "install": {
+                "license": "ISC",
+                "url": "http://erratique.ch/software/cmdliner/releases/cmdliner-1.0.2.tbz",
+                "name": "cmdliner",
+                "md5-checksum": "ab2f0130e88e8dcd723ac6154c98a881",
+                "version": "1.0.2"
+            }
+        },
+        {
+            "install": {
+                "license": "LGPL-2.1-with-OpenSSL-exception & BSD-3-Clause",
+                "url": "https://github.com/ocsigen/lwt/archive/2.4.5.tar.gz",
+                "name": "lwt",
+                "md5-checksum": "9a9b4c92bd4bf321a4fb9804be75d168",
+                "version": "2.4.5"
+            }
+        },
+        {
+            "install": {
+                "license": "LGPL-2.0-with-OCaml-exception",
+                "url": "https://github.com/ocaml/ocaml-re/archive/1.7.1.tar.gz",
+                "name": "re",
+                "md5-checksum": "0e45743512b7ab5e6b175f955dc72002",
+                "version": "1.7.1"
+            }
+        },
+        {
+            "install": {
+                "license": "BSD-3-Clause",
+                "url": "https://github.com/mjambon/cppo/archive/v1.5.0.tar.gz",
+                "name": "cppo",
+                "md5-checksum": "bdc99442945f6bc26e7a8096d0975239",
+                "version": "1.5.0"
+            }
+        },
+        {
+            "install": {
+                "license": "Apache-2.0 & BSD-3-Clause & INRIA-Disclaimer",
+                "url": "https://ocaml.janestreet.com/ocaml-core/113.00/files/sexplib-113.00.00.tar.gz",
+                "name": "sexplib",
+                "md5-checksum": "642c795001cc3df4631e678852c806c8",
+                "version": "113.00.00"
+            }
+        },
+        {
+            "install": {
+                "license": "Apache-2.0",
+                "url": "https://ocaml.janestreet.com/ocaml-core/113.00/files/fieldslib-113.00.00.tar.gz",
+                "name": "fieldslib",
+                "md5-checksum": "1d6c41507d25bcfdd24ce4e97efea404",
+                "version": "113.00.00"
+            }
+        },
+        {
+            "install": {
+                "license": "ISC",
+                "url": "http://erratique.ch/software/uuidm/releases/uuidm-0.9.6.tbz",
+                "name": "uuidm",
+                "md5-checksum": "98ef30cd99ad4e4f7b4c33affa19465b",
+                "version": "0.9.6"
+            }
+        },
+        {
+            "install": {
+                "license": "LGPL-2.1-with-Ocaml-exception",
+                "url": "https://github.com/OCamlPro/ocplib-endian/archive/1.0.tar.gz",
+                "name": "ocplib-endian",
+                "md5-checksum": "74b45ba33e189283170a748c2a3ed477",
+                "version": "1.0"
+            }
+        },
+        {
+            "install": {
+                "license": "ISC",
+                "url": "https://github.com/mirage/ocaml-uri/archive/v1.4.0.tar.gz",
+                "name": "uri",
+                "md5-checksum": "f8d9acfae8c86dde20fcd1a911a362af",
+                "version": "1.4.0"
+            }
+        },
+        {
+            "install": {
+                "license": "ISC",
+                "url": "https://github.com/mirage/ocaml-cstruct/archive/v1.9.0.tar.gz",
+                "name": "cstruct",
+                "md5-checksum": "59b512261058e1fe649d10d6ac268285",
+                "version": "1.9.0"
+            }
+        },
+        {
+            "install": {
+                "license": "LGPL-2.1-with-Ocaml-exception",
+                "url": "https://github.com/djs55/ocaml-vhd/archive/0.6.4.tar.gz",
+                "name": "vhd-format",
+                "md5-checksum": "198c51d76c2e08427e9a9e01b00a583d",
+                "version": "0.6.4"
+            }
+        },
+        {
+            "install": {
+                "license": "LGPL-2.1-with-Ocaml-exception",
+                "url": "https://github.com/mirage/ocaml-tar/archive/0.2.1.tar.gz",
+                "name": "tar-format",
+                "md5-checksum": "29e4617c2ee177b921086edce28910ac",
+                "version": "0.2.1"
+            }
+        },
+        {
+            "install": {
+                "license": "LGPL-2.1 with OCaml linking exception",
+                "url": "https://github.com/xapi-project/nbd/archive/0.9.2.tar.gz",
+                "name": "nbd",
+                "md5-checksum": "8b3e03d77d9e2e4dfaae4bf831d44e40",
+                "version": "0.9.2"
+            }
+        },
+        {
+            "install": {
+                "license": "ISC",
+                "url": "https://github.com/mirage/ocaml-cohttp/archive/v0.9.13.tar.gz",
+                "name": "cohttp",
+                "md5-checksum": "506cf944285f87d3b6db758d2bfeeaf8",
+                "version": "0.9.13"
+            }
+        },
+        {
+            "install": {
+                "license": "LGPL-2.1-with-Ocaml-exception",
+                "url": "https://github.com/djs55/vhd-tool/archive/0.6.5.tar.gz",
+                "name": "vhd-tool",
+                "md5-checksum": "52e512eec2c96c90e1b5da1a604cabf4",
+                "version": "0.6.5"
+            }
+        }
+    ],
+    "request": {
+        "remove": [],
+        "upgrade": [],
+        "action": "install",
+        "install": [
+            "vhd-tool.0.6.5"
+        ],
+        "criteria": "-removed,-count[version-lag:,true],-changed,-count[version-lag:,false],-new"
+    },
+    "opam-version": "2.0.0~beta4 (324cd0e2ade04fc1fa2356121904334a5d2d7eb6)"
+}

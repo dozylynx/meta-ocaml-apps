@@ -1,0 +1,12 @@
+diff --git a/tools/jbuild b/tools/jbuild
+index 70c40a5..b854ef2 100644
+--- a/tools/jbuild
++++ b/tools/jbuild
+@@ -2,6 +2,7 @@
+ 
+ (executables
+  ((names (add_special_comments pp))
++  (modes (byte))
+   (libraries (compiler-libs.common))))
+ 
+ (ocamllex (pp_rewrite))

@@ -1,0 +1,14 @@
+diff --git a/Makefile b/Makefile
+index 4133448..09b4b43 100644
+--- a/Makefile
++++ b/Makefile
+@@ -9,7 +9,8 @@ ASYNC ?= $(shell if ocamlfind query async_core >/dev/null 2>&1; then echo --enab
+ MIRAGE_UNIX ?= $(shell if ocamlfind query mirage-tcpip-unix >/dev/null 2>&1; then echo --enable-mirage-unix; fi)
+ MIRAGE_XEN ?= $(shell if ocamlfind query mirage-tcpip-xen >/dev/null 2>&1; then echo --enable-mirage-xen; fi)
+ ifeq "$(findstring $(MIRAGE_OS),xen kfreebsd)" ""
+-TESTS ?= --enable-tests
++# disable tests.
++# TESTS ?= --enable-tests
+ endif
+ # disabled by default as they hang at the moment for Async
+ # NETTESTS ?= --enable-nettests

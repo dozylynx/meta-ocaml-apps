@@ -1,0 +1,24 @@
+diff --git a/compiler-stdlib/gen/jbuild b/compiler-stdlib/gen/jbuild
+index a65de4e..d9d730a 100644
+--- a/compiler-stdlib/gen/jbuild
++++ b/compiler-stdlib/gen/jbuild
+@@ -2,6 +2,7 @@
+  ((names (gen))
+   (flags (:standard -safe-string))
+   (libraries (compiler-libs.common compiler-libs.bytecomp))
++  (modes (byte))
+   (preprocess no_preprocessing)))
+ 
+ 
+diff --git a/shadow-stdlib/gen/jbuild b/shadow-stdlib/gen/jbuild
+index 2db64d1..5e30c10 100644
+--- a/shadow-stdlib/gen/jbuild
++++ b/shadow-stdlib/gen/jbuild
+@@ -3,6 +3,7 @@
+   (flags (:standard -safe-string))
+   (libraries (str compiler-libs.common caml))
+   (link_flags (-linkall))
++  (modes (byte))
+   (preprocess no_preprocessing)))
+ 
+ (ocamllex (mapper))

@@ -1,0 +1,13 @@
+diff --git a/Makefile b/Makefile
+index 82703c9..880db06 100644
+--- a/Makefile
++++ b/Makefile
+@@ -199,7 +199,7 @@ man/ocamlbuild.1: man/ocamlbuild.header.1 man/ocamlbuild.options.1 man/ocamlbuil
+ 	cat $^ > man/ocamlbuild.1
+ 
+ man/ocamlbuild.options.1: man/options_man.byte
+-	./man/options_man.byte > man/ocamlbuild.options.1
++	ocamlrun ./man/options_man.byte > man/ocamlbuild.options.1
+ 
+ clean::
+ 	rm -f man/ocamlbuild.options.1

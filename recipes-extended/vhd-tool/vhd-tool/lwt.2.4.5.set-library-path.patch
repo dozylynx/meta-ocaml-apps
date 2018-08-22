@@ -1,0 +1,12 @@
+diff --git a/configure b/configure
+index 6acfaeb..096d237 100755
+--- a/configure
++++ b/configure
+@@ -23,5 +23,7 @@ for i in "$@"; do
+   esac
+ done
+ 
++export LIBRARY_PATH=`echo $PKG_CONFIG_PATH | sed 's,/pkgconfig:.*$,,'`
++
+ ocaml setup.ml -configure "$@"
+ # OASIS_STOP

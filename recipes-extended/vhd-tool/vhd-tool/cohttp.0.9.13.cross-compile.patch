@@ -1,0 +1,52 @@
+diff --git a/Makefile b/Makefile
+index 09b4b43..db5b959 100644
+--- a/Makefile
++++ b/Makefile
+@@ -15,32 +15,28 @@ endif
+ # disabled by default as they hang at the moment for Async
+ # NETTESTS ?= --enable-nettests
+ 
+-setup.bin: setup.ml
+-	ocamlopt.opt -o $@ $< || ocamlopt -o $@ $< || ocamlc -o $@ $<
+-	rm -f setup.cmx setup.cmi setup.o setup.cmo
++setup.data:
++	ocaml setup.ml -configure $(LWT) $(ASYNC) $(MIRAGE_UNIX) $(MIRAGE_XEN) $(TESTS) $(NETTESTS) --prefix $(PREFIX)
+ 
+-setup.data: setup.bin
+-	./setup.bin -configure $(LWT) $(ASYNC) $(MIRAGE_UNIX) $(MIRAGE_XEN) $(TESTS) $(NETTESTS) --prefix $(PREFIX)
++build: setup.data
++	ocaml setup.ml -build -classic-display
+ 
+-build: setup.data setup.bin
+-	./setup.bin -build -classic-display
++doc: setup.data
++	ocaml setup.ml -doc
+ 
+-doc: setup.data setup.bin
+-	./setup.bin -doc
++install:
++	ocaml setup.ml -install
+ 
+-install: setup.bin
+-	./setup.bin -install
++test: build
++	ocaml setup.ml -test
+ 
+-test: setup.bin build
+-	./setup.bin -test
++fulltest: build
++	ocaml setup.ml -test
+ 
+-fulltest: setup.bin build
+-	./setup.bin -test
+-
+-reinstall: setup.bin
++reinstall:
+ 	ocamlfind remove $(NAME) || true
+-	./setup.bin -reinstall
++	ocaml setup.ml -reinstall
+ 
+ clean:
+ 	ocamlbuild -clean
+-	rm -f setup.data setup.log setup.bin
++	rm -f setup.data setup.log

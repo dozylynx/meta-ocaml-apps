@@ -1,0 +1,527 @@
+diff --git a/lib/META b/lib/META
+index a72a3f9..d0a998e 100644
+--- a/lib/META
++++ b/lib/META
+@@ -11,7 +11,7 @@ exists_if = "vhd.cma"
+ package "lwt" (
+  version = "0.5.0"
+  description = ".vhd file manipulation"
+- requires = "lwt lwt.unix cstruct.lwt oUnit"
++ requires = "lwt lwt.unix cstruct.lwt"
+  archive(byte) = "vhd_lwt.cma"
+  archive(byte, plugin) = "vhd_lwt.cma"
+  archive(native) = "vhd_lwt.cmxa"
+diff --git a/setup.ml b/setup.ml
+index 27e7681..56cc00d 100644
+--- a/setup.ml
++++ b/setup.ml
+@@ -5827,7 +5827,7 @@
+                       },
+                    {
+                       lib_modules =
+-                        ["Vhd"; "S"; "Vhd_result"; "Element"; "Patterns"];
++                        ["Vhd"; "S"; "Vhd_result"; "Element"];
+                       lib_pack = false;
+                       lib_internal_modules = [];
+                       lib_findlib_parent = None;
+@@ -5849,8 +5849,7 @@
+                         [
+                            FindlibPackage ("lwt", None);
+                            FindlibPackage ("lwt.unix", None);
+-                           FindlibPackage ("cstruct.lwt", None);
+-                           FindlibPackage ("oUnit", None)
++                           FindlibPackage ("cstruct.lwt", None)
+                         ];
+                       bs_build_tools = [ExternalTool "ocamlbuild"];
+                       bs_c_sources =
+@@ -5865,96 +5864,12 @@
+                       },
+                    {
+                       lib_modules =
+-                        ["Vhd_lwt"; "Memory"; "File"; "Patterns_lwt"];
++                        ["Vhd_lwt"; "Memory"; "File"];
+                       lib_pack = false;
+                       lib_internal_modules = [];
+                       lib_findlib_parent = Some "vhd";
+                       lib_findlib_name = Some "lwt";
+                       lib_findlib_containers = [];
+-                      });
+-               Executable
+-                 ({
+-                     cs_name = "disk_to_ocaml";
+-                     cs_data = PropList.Data.create ();
+-                     cs_plugin_data = [];
+-                     },
+-                   {
+-                      bs_build = [(OASISExpr.EBool true, true)];
+-                      bs_install = [(OASISExpr.EBool true, false)];
+-                      bs_path = "lib_test";
+-                      bs_compiled_object = Best;
+-                      bs_build_depends =
+-                        [
+-                           FindlibPackage ("lwt", None);
+-                           FindlibPackage ("lwt.unix", None);
+-                           InternalLibrary "vhd";
+-                           InternalLibrary "vhd_lwt";
+-                           FindlibPackage ("cstruct", None)
+-                        ];
+-                      bs_build_tools = [ExternalTool "ocamlbuild"];
+-                      bs_c_sources = [];
+-                      bs_data_files = [];
+-                      bs_ccopt = [(OASISExpr.EBool true, [])];
+-                      bs_cclib = [(OASISExpr.EBool true, [])];
+-                      bs_dlllib = [(OASISExpr.EBool true, [])];
+-                      bs_dllpath = [(OASISExpr.EBool true, [])];
+-                      bs_byteopt = [(OASISExpr.EBool true, [])];
+-                      bs_nativeopt = [(OASISExpr.EBool true, [])];
+-                      },
+-                   {exec_custom = true; exec_main_is = "disk_to_ocaml.ml"; });
+-               Executable
+-                 ({
+-                     cs_name = "parse_test";
+-                     cs_data = PropList.Data.create ();
+-                     cs_plugin_data = [];
+-                     },
+-                   {
+-                      bs_build = [(OASISExpr.EBool true, true)];
+-                      bs_install = [(OASISExpr.EBool true, false)];
+-                      bs_path = "lib_test";
+-                      bs_compiled_object = Best;
+-                      bs_build_depends =
+-                        [
+-                           FindlibPackage ("lwt", None);
+-                           FindlibPackage ("lwt.unix", None);
+-                           InternalLibrary "vhd";
+-                           InternalLibrary "vhd_lwt";
+-                           FindlibPackage ("cstruct", None);
+-                           FindlibPackage ("oUnit", None)
+-                        ];
+-                      bs_build_tools = [ExternalTool "ocamlbuild"];
+-                      bs_c_sources = [];
+-                      bs_data_files = [];
+-                      bs_ccopt = [(OASISExpr.EBool true, [])];
+-                      bs_cclib = [(OASISExpr.EBool true, [])];
+-                      bs_dlllib = [(OASISExpr.EBool true, [])];
+-                      bs_dllpath = [(OASISExpr.EBool true, [])];
+-                      bs_byteopt = [(OASISExpr.EBool true, [])];
+-                      bs_nativeopt = [(OASISExpr.EBool true, [])];
+-                      },
+-                   {exec_custom = true; exec_main_is = "parse_test.ml"; });
+-               Test
+-                 ({
+-                     cs_name = "parse_test";
+-                     cs_data = PropList.Data.create ();
+-                     cs_plugin_data = [];
+-                     },
+-                   {
+-                      test_type = (`Test, "custom", Some "0.3");
+-                      test_command =
+-                        [(OASISExpr.EBool true, ("./parse_test.native", []))];
+-                      test_custom =
+-                        {
+-                           pre_command = [(OASISExpr.EBool true, None)];
+-                           post_command = [(OASISExpr.EBool true, None)];
+-                           };
+-                      test_working_directory = None;
+-                      test_run =
+-                        [
+-                           (OASISExpr.ENot (OASISExpr.EFlag "tests"), false);
+-                           (OASISExpr.EFlag "tests", true)
+-                        ];
+-                      test_tools = [ExternalTool "ocamlbuild"];
+                       })
+             ];
+           plugins = [(`Extra, "META", Some "0.3")];
+diff --git a/lib/patterns.ml b/lib/patterns.ml
+deleted file mode 100644
+index 901c344..0000000
+--- a/lib/patterns.ml
++++ /dev/null
+@@ -1,131 +0,0 @@
+-(*
+- * Copyright (C) 2011-2013 Citrix Inc
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU Lesser General Public License as published
+- * by the Free Software Foundation; version 2.1 only. with the special
+- * exception on linking described in file LICENSE.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU Lesser General Public License for more details.
+- *)
+-
+-(* Interesting set of I/O patterns for testing a vhd implementation *)
+-
+-let kib = 1024L
+-let mib = Int64.(mul 1024L kib)
+-let gib = Int64.(mul 1024L mib)
+-let max_disk_size = Int64.(mul 2040L gib)
+-
+-(* Interesting virtual sizes of disks *)
+-let sizes = [
+-  0L;            (* edge case: minimum size *)
+-  4194304L;      (* common case: 2 blocks *)
+-  max_disk_size; (* edge case: maximum size *)
+-]
+-
+-(* Places within an array (either a sector bitmap or BAT) *)
+-type choice =
+-  | First        (* edge case: first entry *)
+-  | Last         (* edge case: last entry *)
+-
+-let choices = [ First; Last ]
+-
+-let string_of_choice = function
+-  | First  -> "first"
+-  | Last   -> "last"
+-
+-(* Position to read or write in a vhd *)
+-type position = {
+-  block: choice;
+-  sector: choice;
+-}
+-
+-let rec allpairs xs ys = match xs with
+-  | [] -> []
+-  | x :: xs -> List.map (fun y -> x, y) ys @ (allpairs xs ys)
+-
+-let positions =
+-  List.map (fun (block, sector) -> { block; sector }) (allpairs choices choices)
+-
+-(* Individual step *)
+-type operation =
+-  | Create of int64 (* Create a vhd of a given size; open file for I/O *)
+-  | Snapshot        (* Snapshot current file; open new file for I/O *)
+-  | Write of (position * string) (* Write copies of a given string over a specific sector *)
+-
+-let descr_of_operation = function
+-  | Create x -> Printf.sprintf "create a disk of size %Ld bytes; open it" x
+-  | Snapshot -> "take a snapshot; open it"
+-  | Write (p, message) -> Printf.sprintf "write \"%s\"to the %s sector of the %s block" (String.escaped message) (string_of_choice p.sector) (string_of_choice p.block)
+-
+-let descr_of_operation = function
+-  | Create x -> [
+-      Printf.sprintf "filename := Vhd.create(size = %Ld)" x;
+-      "current := Vhd.open(filename)"
+-    ]
+-  | Snapshot -> [
+-      "filename := Vhd.snapshot(current)"; 
+-      "current := Vhd.open(filename)"
+-    ]
+-  | Write (p, message) -> [
+-      Printf.sprintf "Vhd.write(current, block = %s, sector = %s, data = \"%s\")"
+-        (string_of_choice p.block) (string_of_choice p.sector)
+-        (String.escaped message)
+-    ]
+-
+-type program = operation list
+-
+-let string_of_operation = function
+-  | Create x -> Printf.sprintf "Create:%Ld" x
+-  | Snapshot -> "Snapshot"
+-  | Write (p, _) -> Printf.sprintf "Write:%s:%s" (string_of_choice p.block) (string_of_choice p.sector)
+-
+-let descr_of_program p =
+-  let lines = List.concat (List.map descr_of_operation p) in
+-  List.rev (fst (List.fold_left (fun (sofar, next) line ->
+-    Printf.sprintf "%d %s" (next * 10) line :: sofar, next + 1
+-  ) ([], 1) lines))
+-
+-let string_of_program p = String.concat "_" (List.map string_of_operation p)
+-
+-let first_write_message = "This is a sector which contains simple data.\n"
+-let second_write_message = "All work and no play makes Dave a dull boy.\n"
+-let first_write p = Write(p, first_write_message)
+-let second_write p = Write(p, second_write_message)
+-
+-(* Check writing and then reading back works *)
+-let create_write_read =
+-  List.map (fun (size, p) ->
+-    [ Create size; first_write p ]
+-  ) (allpairs sizes positions)
+-
+-(* Check writing and then reading back works in a simple chain *)
+-let create_write_read_leaf =
+-  List.map (fun (size, p) ->
+-    [ Create size; Snapshot; first_write p ]
+-  ) (allpairs sizes positions)
+-
+-(* Check writing and then reading back works in a chain where the writes are in the parent *)
+-let create_write_read_parent =
+-  List.map (fun (size, p) ->
+-    [ Create size; first_write p; Snapshot ]
+-  ) (allpairs sizes positions)
+-
+-(* Check writing and then reading back works in a chain where there are writes in both parent and leaf *)
+-let create_write_overwrite =
+-  List.map (fun (size, (p1, p2)) ->
+-    [ Create size; first_write p1; Snapshot; second_write p2 ]
+-  ) (allpairs sizes (allpairs positions positions))
+-
+-(* TODO: ... and all of that again with a larger leaf *)
+-
+-let programs =
+-  List.concat [
+-    create_write_read;
+-    create_write_read_leaf;
+-    create_write_read_parent;
+-    create_write_overwrite;
+-]
+diff --git a/lib/patterns.mli b/lib/patterns.mli
+deleted file mode 100644
+index a09aacd..0000000
+--- a/lib/patterns.mli
++++ /dev/null
+@@ -1,53 +0,0 @@
+-(*
+- * Copyright (C) 2011-2013 Citrix Inc
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU Lesser General Public License as published
+- * by the Free Software Foundation; version 2.1 only. with the special
+- * exception on linking described in file LICENSE.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU Lesser General Public License for more details.
+- *)
+-
+-(** Interesting set of I/O patterns for testing a vhd implementation *)
+-
+-(** Interesting vhd virtual sizes *)
+-val sizes: int64 list
+-
+-(** Places within an array (either a sector bitmap or BAT) *)
+-type choice =
+-  | First        (** edge case: first entry *)
+-  | Last         (** edge case: last entry *)
+-
+-(** Position to read or write in a vhd *)
+-type position = {
+-  block: choice;
+-  sector: choice;
+-}
+-
+-(** Individual step *)
+-type operation =
+-  | Create of int64
+-    (** Create a vhd of a given size; open file for I/O *)
+-
+-  | Snapshot
+-    (** Snapshot current file; open new file for I/O *)
+-
+-  | Write of (position * string)
+-    (** Write copies of a given string over a specific sector *)
+-
+-(** A program is a linear sequence of operations, like a finite
+-    execution trace. *)
+-type program = operation list
+-
+-val string_of_program: program -> string
+-(** A short string useful as a test label *)
+-
+-val descr_of_program: program -> string list
+-(** Printable program "listing" *)
+-
+-val programs: program list
+-(** All definied "interesting" programs *)
+diff --git a/lib/patterns_lwt.ml b/lib/patterns_lwt.ml
+deleted file mode 100644
+index 0e9cef2..0000000
+--- a/lib/patterns_lwt.ml
++++ /dev/null
+@@ -1,167 +0,0 @@
+-(*
+- * Copyright (C) 2011-2013 Citrix Inc
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU Lesser General Public License as published
+- * by the Free Software Foundation; version 2.1 only. with the special
+- * exception on linking described in file LICENSE.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU Lesser General Public License for more details.
+- *)
+-open OUnit
+-open Lwt
+-
+-module Impl = Vhd.Make(Vhd_lwt)
+-open Impl
+-open Vhd
+-open Vhd_lwt
+-open Patterns
+-
+-let disk_name_stem = "/tmp/dynamic."
+-let disk_suffix = ".vhd"
+-
+-let make_new_filename =
+-  let counter = ref 0 in
+-  fun () ->
+-    let this = !counter in
+-    incr counter;
+-    disk_name_stem ^ (string_of_int this) ^ disk_suffix
+-
+-let fill_sector_with pattern =
+-  let b = Memory.alloc 512 in
+-  for i = 0 to 511 do
+-    Cstruct.set_char b i (pattern.[i mod (String.length pattern)])
+-  done;
+-  b
+-
+-let absolute_sector_of vhd { block; sector } =
+-  if vhd.Vhd.header.Header.max_table_entries = 0
+-  then None
+-  else
+-    let block = match block with
+-    | First -> 0
+-    | Last -> vhd.Vhd.header.Header.max_table_entries - 1 in
+-    let sectors_per_block = 1 lsl vhd.Vhd.header.Header.block_size_sectors_shift in
+-    let relative_sector = match sector with
+-    | First -> 0
+-    | Last -> sectors_per_block - 1 in
+-    Some (Int64.(add(mul (of_int block) (of_int sectors_per_block)) (of_int relative_sector)))
+-
+-let cstruct_to_string c = String.escaped (Cstruct.to_string c)
+-
+-(* Verify that vhd [t] contains the sectors [expected] *)
+-let rec check_written_sectors t expected = match expected with
+-  | [] -> return ()
+-  | (x, data) :: xs ->
+-    Vhd_IO.read_sector t x >>= fun y ->
+-    ( match y with
+-    | None -> fail (Failure "read after write failed")
+-    | Some y ->
+-      assert_equal ~printer:cstruct_to_string ~cmp:cstruct_equal data y;
+-      return () ) >>= fun () ->
+-    check_written_sectors t xs
+-
+-let empty_sector = Memory.alloc 512
+-
+-(* Verify the raw data stream from [t] contains exactly [expected] and no more.
+-   If ~allow_empty then we accept sectors which are present (in the bitmap) but
+-   physically empty. *)
+-let check_raw_stream_contents ~allow_empty t expected =
+-  Vhd_input.raw t >>= fun stream ->
+-  fold_left (fun offset x -> match x with
+-    | Element.Empty y -> 
+-     (* all sectors in [offset, offset + y = 1] should not be in the contents list *)
+-      List.iter (fun (x, _) ->
+-        if x >= offset && x < (Int64.add offset y)
+-        then failwith (Printf.sprintf "Sector %Ld is not supposed to be empty" x)
+-      ) expected;
+-      return (Int64.add offset y)
+-    | Element.Copy(handle, offset', len) ->
+-      (* all sectors in [offset, offset + len - 1] should be in the contents list *)
+-      (* XXX: this won't cope with very large copy requests *)
+-      Fd.really_read handle (Int64.(mul offset' 512L)) (Int64.to_int len * 512) >>= fun data ->
+-      let rec check i =
+-        if i >= (Int64.to_int len) then ()
+-        else
+-          let sector = Int64.(add offset (of_int i)) in
+-          let actual = Cstruct.sub data (i * 512) 512 in
+-
+-          if not(List.mem_assoc sector expected) then begin
+-            if not allow_empty
+-            then failwith (Printf.sprintf "Sector %Ld is not supposed to be written to" sector)
+-            else assert_equal ~printer:cstruct_to_string ~cmp:cstruct_equal empty_sector actual
+-          end else begin
+-            let expected = List.assoc sector expected in
+-            assert_equal ~printer:cstruct_to_string ~cmp:cstruct_equal expected actual;
+-          end;
+-          check (i + 1) in
+-      check 0;
+-      return (Int64.(add offset len))
+-    | Element.Sectors data ->
+-      let rec loop offset remaining =
+-        if Cstruct.len remaining = 0
+-        then return offset
+-        else
+-          (* the sector [offset] should be in the contents list *)
+-          if not(List.mem_assoc offset expected)
+-          then failwith (Printf.sprintf "Sector %Ld is not supposed to be written to" offset)
+-          else
+-            let expected = List.assoc offset expected in
+-            let actual = Cstruct.sub remaining 0 sector_size in
+-            assert_equal ~printer:cstruct_to_string ~cmp:cstruct_equal expected actual;
+-            loop (Int64.(add offset 1L)) (Cstruct.shift remaining sector_size) in
+-      loop offset data
+-  ) 0L stream.elements >>= fun next_sector ->
+-  (* [next_sector] should be higher than the highest sector in the contents list *)
+-  let highest_sector = List.fold_left max (-1L) (List.map fst expected) in
+-  assert (next_sector > highest_sector);
+-  return ()
+-
+-let verify t contents =
+-    let capacity = Int64.(shift_left (of_int t.Vhd.header.Header.max_table_entries) (t.Vhd.header.Header.block_size_sectors_shift + sector_shift)) in
+-    ( if capacity < t.Vhd.footer.Footer.current_size
+-      then fail (Failure (Printf.sprintf "insufficient capacity in vhd: max table entries = %d; capacity = %Ld; current_size = %Ld" t.Vhd.header.Header.max_table_entries capacity t.Vhd.footer.Footer.current_size))
+-      else return () ) >>= fun () ->
+-
+-    check_written_sectors t contents >>= fun () ->
+-    check_raw_stream_contents ~allow_empty:false t contents >>= fun () ->
+-
+-    let write_stream fd stream =
+-      fold_left (fun offset x -> match x with
+-        | Element.Empty y -> return (Int64.(add offset (mul y 512L)))
+-        | Element.Sectors data ->
+-          Fd.really_write fd offset data >>= fun () ->
+-          return (Int64.(add offset (of_int (Cstruct.len data))))
+-        | Element.Copy(fd', offset', len') ->
+-          really_read fd' (Int64.mul offset' 512L) (Int64.to_int len' * 512) >>= fun buf ->
+-          Fd.really_write fd offset buf >>= fun () ->
+-          return (Int64.(add offset (of_int (Cstruct.len buf))))
+-      ) 0L stream.elements in
+-
+-    (* Stream the contents as a fresh vhd *)
+-    let filename = make_new_filename () in
+-    Fd.create filename >>= fun fd ->
+-    Vhd_input.vhd t >>= fun stream ->
+-    write_stream fd stream >>= fun _ ->
+-    Fd.close fd >>= fun () ->
+-    (* Check the contents look correct *)
+-    Vhd_IO.openfile filename false >>= fun t' ->
+-    check_written_sectors t' contents >>= fun () ->
+-    check_raw_stream_contents ~allow_empty:true t' contents >>= fun () ->
+-    Vhd_IO.close t' >>= fun () ->
+-    (* Stream the contents as a fresh vhd with a batmap *)
+-    let filename = make_new_filename () in
+-    Fd.create filename >>= fun fd ->
+-    Vhd_input.vhd ~emit_batmap:true t >>= fun stream ->
+-    write_stream fd stream >>= fun _ ->
+-    Fd.close fd >>= fun () ->
+-    (* Check the contents look correct *)
+-    Vhd_IO.openfile filename false >>= fun t' ->
+-    check_written_sectors t' contents >>= fun () ->
+-    check_raw_stream_contents ~allow_empty:true t' contents >>= fun () ->
+-    Vhd_IO.close t'
+-
+-
+diff --git a/lib/patterns_lwt.mli b/lib/patterns_lwt.mli
+deleted file mode 100644
+index 9d79c39..0000000
+--- a/lib/patterns_lwt.mli
++++ /dev/null
+@@ -1,18 +0,0 @@
+-(*
+- * Copyright (C) 2011-2013 Citrix Inc
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU Lesser General Public License as published
+- * by the Free Software Foundation; version 2.1 only. with the special
+- * exception on linking described in file LICENSE.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU Lesser General Public License for more details.
+- *)
+-
+-val verify: Vhd_lwt.fd Vhd.Vhd.t -> (int64 * Cstruct.t) list -> unit Lwt.t
+-(** [verify vhd sectors] performs various checks on [vhd] to ensure it has
+-    exactly the content given by [sectors], an association list of sector
+-    number to 512-byte block. *)
